@@ -13,17 +13,17 @@ class Description extends React.Component<IProps, IState> {
     countBy: 1,
   };
 
-  public state: IState = {
+  state: IState = {
     count: 0,
   };
 
-  public increase = () => {
+  increase = () => {
     const countBy: number = this.props.countBy!;
     const count = this.state.count + countBy;
     this.setState({ count });
   };
 
-  public render() {
+  render() {
     return (
       <div>
         <p>My favorite number is {this.state.count}</p>
