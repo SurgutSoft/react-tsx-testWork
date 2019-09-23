@@ -1,9 +1,14 @@
 import * as React from 'react';
-import Input from "antd/lib/input";
-import Button from "antd/lib/button";
 import ResultTable from "./ResultTable";
-import { any, number } from 'prop-types';
+import { InputNumber, Button } from 'antd';
 
+export interface MatrixParams {
+    backgroundColor?: String
+    countX?: Number
+    countY?: Number
+    randomValue?: Number
+    value?: String
+}
 
 export default class Matrix extends React.Component {
     state = {
@@ -12,31 +17,30 @@ export default class Matrix extends React.Component {
         randomValue: 0,
         matrix: [],
         countDomains: 0,
-        result: []
+        result: [],
     }
 
-    setX = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        if (Number(evt.target.value) > 40 || Number(evt.target.value) < 0) {
+    setX = (value: number | undefined) => {
+        if (value && (value > 40 || value < 0) ) {
             alert("значения должны быть в интервале от 0 до 40");
-            return;
+        } else {
+            this.setState({ countX: value })
         }
-        this.setState({ countX: evt.target.value })
     }
 
-    setY = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        if (Number(evt.target.value) > 40 || Number(evt.target.value) < 0) {
+    setY = (value: number | undefined) => {
+        if (value && (value > 40 || value < 0)) {
             alert("значения должны быть в интервале от 0 до 40");
-            return;
+        } else {
+            this.setState({ countY: value })
         }
-        this.setState({ countY: evt.target.value })
     }
 
-    setRandomValue = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        if (Number(evt.target.value) > 1 || Number(evt.target.value) < 0) {
+    setRandomValue = (value: number | undefined) => {
+        if (value && (value > 1 || value < 0)) {
             alert("значения должны быть в интервале от 0 до 1");
-            return;
         }
-        this.setState({ randomValue: evt.target.value })
+        this.setState({ randomValue: value })
     }
 
     changeValue = (evt: React.MouseEvent<HTMLDivElement>) => {
@@ -49,11 +53,11 @@ export default class Matrix extends React.Component {
     }
 
     createClearMatrix = () => {
-        let tr = [];
+        let tr: Array<MatrixParams> = [];
         let td = [];
         for (let i = 0; i < this.state.countY; i++) {
             for (let j = 0; j < this.state.countX; j++) {
-                tr.push({ value: "", backgroundColor: "white", domainName: "" });
+                tr.push({ value: "", backgroundColor: "white" });
             }
             td.push(tr);
             tr = [];
@@ -124,17 +128,15 @@ export default class Matrix extends React.Component {
 
         countDomains = this.unique(tempMatrix);
         this.setState({ matrix: tempMatrix });
-        console.log(countDomains);
-
-        let result = { random: this.state.randomValue, size: this.state.countY * this.state.countX, domainCount: countDomains };
-        let mainResult: any = this.state.result;
+        let result = { randomValue: this.state.randomValue, size: this.state.countY * this.state.countX, domainCount: countDomains };
+        let mainResult: Array<MatrixParams> = this.state.result;
         if (this.state.result.length < 10) {
-            mainResult.push(result)
+            mainResult.push(result);
         } else {
             mainResult.shift();
             mainResult.push(result);
         }
-        this.setState({ result: mainResult })
+        this.setState({ result: mainResult });
         this.createElementMatrix();
     }
 
@@ -175,13 +177,13 @@ export default class Matrix extends React.Component {
         const isSetSizeMatrix = countX > 0 && countY > 0;
         return (
             <div style={{ paddingLeft: 5, paddingTop: 5 }}>
-                <div style={{ width: 300 }}>
-                    <Input placeholder="введите кол. строк от 1 до 40" min={0} max={40} width={200} onChange={this.setX} />
-                    <Input placeholder="введите кол. столбцов от 1 до 40" min={0} max={40} width={400} onChange={this.setY} />
-                    <Input placeholder="введите вероятность заполнения от 0 до 1" min={0} max={1} width={400} onChange={this.setRandomValue} />
-                    <Button onClick={this.createClearMatrix} disabled={!isSetSizeMatrix} > создать пустую матрицу </Button>
-                    <Button onClick={this.createMatrix} disabled={!isSetAllParametrs} > авто заполнение матрицы </Button>
-                    <Button onClick={this.checkMatrixDomens}>посчитать количество доменов матрицы</Button>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                    <InputNumber placeholder="введите N от 1 до 40" min={0} max={40} onChange={this.setX} style={{width: "100%"}}/>
+                    <InputNumber placeholder="введите M от 1 до 40" min={0} max={40} onChange={this.setY} style={{width: "100%"}}/>
+                    <InputNumber placeholder="введите вероятность от 0 до 1" min={0} max={1} onChange={this.setRandomValue} style={{width: "100%"}} />
+                    <Button onClick={this.createClearMatrix} disabled={!isSetSizeMatrix} >создать пустую матрицу</Button>
+                    <Button onClick={this.createMatrix} disabled={!isSetAllParametrs} >авто заполнение матрицы</Button>
+                    <Button onClick={this.checkMatrixDomens} disabled={!isSetAllParametrs}>посчитать количество доменов матрицы</Button>
                 </div>
                 <ResultTable data={this.state.result} />
                 {matrix}

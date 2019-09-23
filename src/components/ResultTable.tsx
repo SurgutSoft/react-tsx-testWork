@@ -3,17 +3,12 @@ import { Table } from "antd";
 
 const columns = [
     {
-        title: '№',
-        dataIndex: 'index',
-        key: 'index',
-    },
-    {
         title: 'Вероятность',
-        dataIndex: 'random',
-        key: 'random',
+        dataIndex: 'randomValue',
+        key: 'randomValue',
     },
     {
-        title: 'size (N*M)',
+        title: 'размер (N*M)',
         dataIndex: 'size',
         key: 'size',
     },
@@ -28,17 +23,14 @@ interface IProps {
     data?: any;
 }
 
-interface IState {
-    count: number;
-}
 
-export default class ResultTable extends React.Component<IProps, IState> {
+export default class ResultTable extends React.Component<IProps> {
     defaultProps: Partial<IProps> = {
         data: [],
     };
     render() {
         return (
-            <Table columns={columns} dataSource={this.props.data} />
+            <Table style={{paddingTop: 5}} columns={columns} dataSource={this.props.data} pagination={false}/>
         )
     }
 }
