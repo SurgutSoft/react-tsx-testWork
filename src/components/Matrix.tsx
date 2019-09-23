@@ -20,28 +20,9 @@ export default class Matrix extends React.Component {
         result: [],
     }
 
-    setX = (value: number | undefined) => {
-        if (value && (value > 40 || value < 0) ) {
-            alert("значения должны быть в интервале от 0 до 40");
-        } else {
-            this.setState({ countX: value })
-        }
-    }
-
-    setY = (value: number | undefined) => {
-        if (value && (value > 40 || value < 0)) {
-            alert("значения должны быть в интервале от 0 до 40");
-        } else {
-            this.setState({ countY: value })
-        }
-    }
-
-    setRandomValue = (value: number | undefined) => {
-        if (value && (value > 1 || value < 0)) {
-            alert("значения должны быть в интервале от 0 до 1");
-        }
-        this.setState({ randomValue: value })
-    }
+    setX = (value: number | undefined) => value && (value > 40 || value < 0) ? alert("значения должны быть в интервале от 0 до 40") :  this.setState({ countX: value })
+    setY = (value: number | undefined) => value && (value > 40 || value < 0) ? alert("значения должны быть в интервале от 0 до 40") :  this.setState({ countY: value })
+    setRandomValue = (value: number | undefined) => value && (value > 1 || value < 0) ? alert("значения должны быть в интервале от 0 до 1") : this.setState({ randomValue: value })
 
     changeValue = (evt: React.MouseEvent<HTMLDivElement>) => {
         evt.currentTarget.textContent = evt.currentTarget.textContent === "1" ? "0" : "1";
