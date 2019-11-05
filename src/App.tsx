@@ -1,17 +1,21 @@
 import React from 'react';
-import Matrix from './components/Matrix';
-import 'antd/dist/antd.css';
+import Chart from './components/Charts'
+import configureStore from './redux/store/ConfigureStore';
+import { Provider } from 'react-redux';
 import './App.css';
+
+const store = configureStore();
 
 class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Matrix />
-      </div>
+      <Provider store={store}>
+        <Chart />
+      </Provider>
     )
   }
+
 }
 
 export default App;
